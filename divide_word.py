@@ -1,3 +1,5 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
 import jieba
 
 # coding:utf8
@@ -7,7 +9,23 @@ fou = open('倚天屠龙记_uft8.txt', 'w')
 line = fin.readline()
 while line:
     newline = line.decode('GB18030').encode('utf-8')  # 用GBK、GB2312都会出错
-    print newline,
+    #print newline,
+    print >> fou, newline,
+    line = fin.readline()
+fin.close()
+fou.close()
+
+fin = open('倚天屠龙记_uft8.txt', 'r')
+fou = open('倚天屠龙记_segmented.txt', 'w')
+
+line = fin.readline()
+while line:
+    newline = jieba.cut(line, cut_all=False)
+    str_out = ' '.join(newline).encode('utf-8').replace(',',' ').replace('。',' ').replace('？',' ').replace('！',' ') \
+        .replace('“', ' ').replace('”',' ').replace('：',' ').replace('‘',' ').replace('’',' ').replace('-',' ') \
+        .replace('（', ' ').replace('）',' ').replace('《',' ').replace('》',' ').replace('；',' ').replace('.',' ') \
+        .replace('、', ' ').replace('…',' ')
+    print str_out
     print >> fou, newline,
     line = fin.readline()
 fin.close()
